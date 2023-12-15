@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div style="width: 50%; margin: auto;" class="">
+    <table class="table caption-top">
+        <caption>Album</caption>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Musician Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Album Rating</th>
+            <th scope="col">Instrument Type</th>
+            <th scope="col">Album Name</th>
+            <th scope="col">Release Date</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        {% for musician in Data %}
+            <tr>
+                <td>{{ musician.id }}</td>
+                {% if user.is_authenticated %}
+                <td><a href="{% url 'edit_musician' id=musician.musicians.id %}" class="btn btn-sm">{{ musician.musicians.first_name }} {{ musician.musicians.last_name }}</a></td>
+                {% else %}
+                <td><a href="{% url 'edit_musician' id=musician.musicians.id %}" class="btn btn-sm  disabled">{{ musician.musicians.first_name }} {{ musician.musicians.last_name }}</a></td>
+                {% endif %}
+                <td>{{ musician.musicians.email }}</td>
+                <td>{{  musician.Rating_between}}</td>
+                <td>{{ musician.musicians.instruments_type }}</td>
+                <td>{{ musician.Album_name}}</td>
+                <td>{{ musician.Album_release_date }}</td> 
+                <td>
+                  {%if user.is_authenticated%}
+                    <a href="{% url 'edit_album' id=musician.id %}" class="btn btn-success btn-sm "  >Edit</a>
+                    <a href="{% url 'delete_model' id=musician.id %}" class="btn btn-danger btn-sm ">Delete</a>
+                  {% else %}
+                    <a href="{% url 'edit_album' id=musician.id %}" class="btn btn-success btn-sm disabled"  >Edit</a>
+                    <a href="{% url 'delete_model' id=musician.id %}" class="btn btn-danger btn-sm disabled">Delete</a>
+                  {%endif%}
+                  
+                </td>
+            </tr>
+        {% endfor %}
+
+
+        </tbody>
+      </table> 
+</div>
+{% endblock %}
